@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${plexMono.variable} bg-[#1C1E26] text-[#97E0A6] font-mono`}>
+      <body className={`${plexMono.variable} p-[20px] bg-[#1C1E26] text-[#97E0A6] font-mono`}>
         {children}
       </body>
     </html>

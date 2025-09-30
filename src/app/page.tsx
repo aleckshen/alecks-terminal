@@ -1,7 +1,132 @@
+"use client";
+
+import { useState, KeyboardEvent } from "react";
+
+type HistoryEntry = {
+  cmd: string;
+  output: string;
+};
+
+const fileSystem = {
+  about: "Hello! I'm me, and this is my about text.",
+  projects: {
+    "my-app": "Description of my-app",
+    "cli-portfolio": "This CLI website you’re building",
+  },
+  contact: "email@example.com",
+};
+
 export default function Home() {
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [input, setInput] = useState("");
+  const [pathStack, setPathStack] = useState<string[]>([]); // e.g. ["projects"]
+  
+  const getCurrentNode = () => {
+    let node: any = fileSystem;
+    for (const seg of pathStack) {
+      node = node[seg];
+    }
+    return node;
+  };
+
+  const handleCommand = (cmd: string) => {
+    if (!cmd) {
+      // skip empty
+      return;
+    }
+    let output = "";
+    const parts = cmd.split(" ").filter(Boolean);
+    const root = getCurrentNode();
+
+    switch (parts[0]) {
+      case "ls":
+        if (typeof root === "object") {
+          output = Object.keys(root).join("  ");
+        } else {
+          output = "";
+        }
+        break;
+      case "cd":
+        if (parts.length < 2) {
+          output = "cd: missing argument";
+        } else {
+          const dir = parts[1];
+          if (
+            root &&
+            typeof root === "object" &&
+            dir in root &&
+            typeof root[dir] === "object"
+          ) {
+            setPathStack((prev) => [...prev, dir]);
+            output = "";
+          } else {
+            output = `cd: no such directory: ${dir}`;
+          }
+        }
+        break;
+      case "cat":
+        if (parts.length < 2) {
+          output = "cat: missing argument";
+        } else {
+          const file = parts[1];
+          if (root && typeof root === "object" && file in root && typeof root[file] === "string") {
+            output = root[file];
+          } else {
+            output = `cat: no such file: ${file}`;
+          }
+        }
+        break;
+      case "help":
+        output = "Available commands: ls, cd <dir>, cat <file>, clear, help";
+        break;
+      case "clear":
+        setHistory([]);
+        setInput("");
+        return;
+      default:
+        output = `command not found: ${parts[0]}`;
+    }
+
+    setHistory((h) => [...h, { cmd, output }]);
+    setInput("");
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleCommand(input.trim());
+    }
+    // TODO: handle up/down arrow history, tab autocomplete etc.
+  };
+
+  const cwd = pathStack.length > 0 ? `~/${pathStack.join("/")}` : "~";
+
   return (
-    <div>
-      hello my name is aleck
+    <div className="min-h-screen p-4">
+      {history.map((line, i) => (
+        <div key={i}>
+          <div className="flex">
+            <span className="text-[#97E0A6] mr-2">
+              visitor@alecksterminal.com:~$
+            </span>
+            <span className="text-white">{line.cmd}</span>
+          </div>
+          {line.output && (
+            <div className="ml-8">{line.output}</div>
+          )}
+        </div>
+      ))}
+      <div className="flex">
+        <span className="text-[#97E0A6] mr-2">
+          visitor@alecksterminal.com:~$
+        </span>
+        <input
+          className="bg-transparent text-white outline-none flex-1"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          autoFocus
+        />
+      </div>
     </div>
   );
 }
