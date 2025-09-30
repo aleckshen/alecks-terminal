@@ -38,6 +38,36 @@ export default function Home() {
     const parts = cmd.split(" ").filter(Boolean);
     const root = getCurrentNode();
 
+
+    /* change to js object e.g const commands = {"ls": {length: x, description: xxx}}
+    function defaultExecute(obj) {
+      print(obj.output);
+    }
+
+    function complicatedCmdExecute(obj) {
+      defaultExecute(obj);
+      navigate();
+    }
+
+    commands = {
+      ls: {
+        length: 1,
+        description: "whatever",
+        output: "whatever you wanna output",
+        execute: defaultExecute,
+      },
+      complicatedCmd: {
+        length: 1,
+        description: "whatever",
+        output: "whatever you wanna output 2",
+        execute: complicatedCmdExecute,
+      },
+    };
+
+    // check commands[arg] exists;
+    commands[arg].execute();
+    */
+
     switch (parts[0]) {
       case "ls":
         if (typeof root === "object") {
