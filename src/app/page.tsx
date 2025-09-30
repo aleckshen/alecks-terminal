@@ -101,21 +101,22 @@ export default function Home() {
   const cwd = pathStack.length > 0 ? `~/${pathStack.join("/")}` : "~";
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen font-mono">
       {history.map((line, i) => (
-        <div key={i}>
-          <div className="flex">
+        <div key={i} className="mb-2"> {/* adds margin-bottom between each command */}
+          <div className="flex items-start">
             <span className="text-[#97E0A6] mr-2">
               visitor@alecksterminal.com:~$
             </span>
-            <span className="text-white">{line.cmd}</span>
+            <span className="text-white break-words">{line.cmd}</span>
           </div>
           {line.output && (
-            <div className="ml-8">{line.output}</div>
+            <div className="mb-[15px] text-white break-words">{line.output}</div>
           )}
         </div>
       ))}
-      <div className="flex">
+
+      <div className="flex items-center mt-2">
         <span className="text-[#97E0A6] mr-2">
           visitor@alecksterminal.com:~$
         </span>
