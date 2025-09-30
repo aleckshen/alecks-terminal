@@ -13,13 +13,13 @@ const fileSystem = {
     "my-app": "Description of my-app",
     "cli-portfolio": "This CLI website you’re building",
   },
-  contact: "email@example.com",
+  contact: "aleckshn@gmail.com",
 };
 
 export default function Home() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [input, setInput] = useState("");
-  const [pathStack, setPathStack] = useState<string[]>([]); // e.g. ["projects"]
+  const [pathStack, setPathStack] = useState<string[]>([]); 
   
   const getCurrentNode = () => {
     let node: any = fileSystem;
@@ -95,7 +95,7 @@ export default function Home() {
     if (e.key === "Enter") {
       handleCommand(input.trim());
     }
-    // TODO: handle up/down arrow history, tab autocomplete etc.
+    // TODO: handle up/down arrow history, tab autocomplete etc. do this stuff later ceebs rn
   };
 
   const cwd = pathStack.length > 0 ? `~/${pathStack.join("/")}` : "~";
@@ -103,7 +103,7 @@ export default function Home() {
   return (
     <div className="min-h-screen font-mono">
       {history.map((line, i) => (
-        <div key={i} className="mb-2"> {/* adds margin-bottom between each command */}
+        <div key={i} className="mb-2"> 
           <div className="flex items-start">
             <span className="text-[#97E0A6] mr-2">
               visitor@alecksterminal.com:~$
@@ -116,8 +116,8 @@ export default function Home() {
         </div>
       ))}
 
-      <div className="flex items-center mt-2">
-        <span className="text-[#97E0A6] mr-2">
+      <div className="flex items-start">
+        <span className="text-[#97E0A6] mr-2 whitespace-nowrap">
           visitor@alecksterminal.com:~$
         </span>
         <input
