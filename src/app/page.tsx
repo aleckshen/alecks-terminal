@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, KeyboardEvent } from "react";
+import { useState, useEffect, KeyboardEvent, useRef} from "react";
 
 type HistoryEntry = {
   cmd: string;
@@ -20,6 +20,13 @@ export default function Home() {
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [input, setInput] = useState("");
   const [pathStack, setPathStack] = useState<string[]>([]); 
+
+  const terminalEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when history changes
+  useEffect(() => {
+    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
   
   const getCurrentNode = () => {
     let node: any = fileSystem;
@@ -123,6 +130,8 @@ export default function Home() {
           )}
         </div>
       ))}
+
+      <div ref={terminalEndRef} />
 
       <div className="flex items-start">
         <span className="text-[#97E0A6] mr-2 whitespace-nowrap">
