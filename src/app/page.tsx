@@ -19,8 +19,9 @@ const fileSystem = {
 
 export default function Home() {
   const [history, setHistory] = useState<HistoryEntry[]>([
-    { cmd: "Welcome!!", output: "Welcome to Aleck's Terminal portfolio :D" },
-    { cmd: "", output: "Type 'help' for a list of available commands", showPrompt: false },
+    { cmd: "Welcome!!", output: "" },
+    { cmd: "", output: "Welcome to Aleck's Terminal portfolio :D", showPrompt: false },
+    { cmd: "", output: "Type 'help' for a list of available commands.", showPrompt: false },
   ]);
   const [input, setInput] = useState("");
   const [pathStack, setPathStack] = useState<string[]>([]); 
