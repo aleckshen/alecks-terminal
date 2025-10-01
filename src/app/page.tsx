@@ -31,78 +31,42 @@ export default function Home() {
 
   const handleCommand = (cmd: string) => {
     if (!cmd) {
-      // If nothing entered, still add a blank entry to history
       setHistory((h) => [...h, { cmd: "", output: "" }]);
       setInput("");
       return;
     }
-    let output = "";
-    const parts = cmd.split(" ").filter(Boolean);
-    const root = getCurrentNode();
 
-    
+    const parts = cmd.split(" ").filter(Boolean);
+    const commandName = parts[0];
+    const args = parts.slice(1);
+
     const commands: Record<
-    string,
-    {
-      description: string;
-      execute: (args: string[]) => string | void;
-    }
+      string,
+      {
+        description: string;
+        expectedArgs: number | null; // null = flexible args
+        execute: (args: string[]) => string | void;
+      }
     > = {
+      help: {
+        description: "Show available commands",
+        expectedArgs: 0,
+        execute: () =>
+          "Available commands: ls, cd <dir>, cat <file>, clear, help",
+      },
       ls: {
-        description: "List directory contents",
-        execute: () => {
-          const root = getCurrentNode();
-          if (typeof root === "object") {
-            return Object.keys(root).join("  ");
-          }
-          return "";
-        },
+        description: "List files in current directory",
+        expectedArgs: 0,
+        execute: () => "about  projects  contact",
       },
       cd: {
         description: "Change directory",
-        execute: (args) => {
-          const root = getCurrentNode();
-          if (args.length < 1) return "cd: missing argument";
-          const dir = args[0];
-          if (
-            root &&
-            typeof root === "object" &&
-            dir in root &&
-            typeof root[dir] === "object"
-          ) {
-            setPathStack((prev) => [...prev, dir]);
-            return "";
-          }
-          return `cd: no such directory: ${dir}`;
-        },
-      },
-      cat: {
-        description: "View file contents",
-        execute: (args) => {
-          const root = getCurrentNode();
-          if (args.length < 1) return "cat: missing argument";
-          const file = args[0];
-          if (
-            root &&
-            typeof root === "object" &&
-            file in root &&
-            typeof root[file] === "string"
-          ) {
-            return root[file];
-          }
-          return `cat: no such file: ${file}`;
-        },
-      },
-      help: {
-        description: "Show available commands",
-        execute: () => {
-          return Object.entries(commands)
-            .map(([name, cmd]) => `${name} - ${cmd.description}`)
-            .join("\n");
-        },
+        expectedArgs: 1,
+        execute: (args: string[]) => `changing directory to ${args[0]}`,
       },
       clear: {
         description: "Clear the screen",
+        expectedArgs: 0,
         execute: () => {
           setHistory([]);
           setInput("");
@@ -110,9 +74,30 @@ export default function Home() {
       },
     };
 
+    let output = "";
+
+    if (commands[commandName]) {
+      const cmdConfig = commands[commandName];
+      // If argument count doesn't match, treat as unknown command
+      if (cmdConfig.expectedArgs !== null && args.length !== cmdConfig.expectedArgs) {
+        output = `command not found: ${cmd}`; // Use the full input here
+      } else {
+        const result = cmdConfig.execute(args);
+        output = result || "";
+      }
+    } else {
+      // command doesn't exist at all
+      output = `command not found: ${cmd}`; // Full input again
+    }
+
+    // only add to history if not clear
+    if (commandName !== "clear") {
       setHistory((h) => [...h, { cmd, output }]);
-      setInput("");
-    };
+    }
+
+    setInput("");
+  };
+
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
