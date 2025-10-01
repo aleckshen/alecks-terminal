@@ -31,13 +31,14 @@ export default function Home() {
 
   const handleCommand = (cmd: string) => {
     if (!cmd) {
-      // skip empty
+      // If nothing entered, still add a blank entry to history
+      setHistory((h) => [...h, { cmd: "", output: "" }]);
+      setInput("");
       return;
     }
     let output = "";
     const parts = cmd.split(" ").filter(Boolean);
     const root = getCurrentNode();
-
 
     /* change to js object e.g const commands = {"ls": {length: x, description: xxx}}
     function defaultExecute(obj) {
