@@ -40,48 +40,30 @@ export default function Home() {
     const parts = cmd.split(" ").filter(Boolean);
     const root = getCurrentNode();
 
-    /* change to js object e.g const commands = {"ls": {length: x, description: xxx}}
-    function defaultExecute(obj) {
-      print(obj.output);
+    
+    const commands: Record<
+    string,
+    {
+      description: string;
+      execute: (args: string[]) => string | void;
     }
-
-    function complicatedCmdExecute(obj) {
-      defaultExecute(obj);
-      navigate();
-    }
-
-    commands = {
+    > = {
       ls: {
-        length: 1,
-        description: "whatever",
-        output: "whatever you wanna output",
-        execute: defaultExecute,
+        description: "List directory contents",
+        execute: () => {
+          const root = getCurrentNode();
+          if (typeof root === "object") {
+            return Object.keys(root).join("  ");
+          }
+          return "";
+        },
       },
-      complicatedCmd: {
-        length: 1,
-        description: "whatever",
-        output: "whatever you wanna output 2",
-        execute: complicatedCmdExecute,
-      },
-    };
-
-    // check commands[arg] exists;
-    commands[arg].execute();
-    */
-
-    switch (parts[0]) {
-      case "ls":
-        if (typeof root === "object") {
-          output = Object.keys(root).join("  ");
-        } else {
-          output = "";
-        }
-        break;
-      case "cd":
-        if (parts.length < 2) {
-          output = "cd: missing argument";
-        } else {
-          const dir = parts[1];
+      cd: {
+        description: "Change directory",
+        execute: (args) => {
+          const root = getCurrentNode();
+          if (args.length < 1) return "cd: missing argument";
+          const dir = args[0];
           if (
             root &&
             typeof root === "object" &&
@@ -89,38 +71,48 @@ export default function Home() {
             typeof root[dir] === "object"
           ) {
             setPathStack((prev) => [...prev, dir]);
-            output = "";
-          } else {
-            output = `cd: no such directory: ${dir}`;
+            return "";
           }
-        }
-        break;
-      case "cat":
-        if (parts.length < 2) {
-          output = "cat: missing argument";
-        } else {
-          const file = parts[1];
-          if (root && typeof root === "object" && file in root && typeof root[file] === "string") {
-            output = root[file];
-          } else {
-            output = `cat: no such file: ${file}`;
+          return `cd: no such directory: ${dir}`;
+        },
+      },
+      cat: {
+        description: "View file contents",
+        execute: (args) => {
+          const root = getCurrentNode();
+          if (args.length < 1) return "cat: missing argument";
+          const file = args[0];
+          if (
+            root &&
+            typeof root === "object" &&
+            file in root &&
+            typeof root[file] === "string"
+          ) {
+            return root[file];
           }
-        }
-        break;
-      case "help":
-        output = "Available commands: ls, cd <dir>, cat <file>, clear, help";
-        break;
-      case "clear":
-        setHistory([]);
-        setInput("");
-        return;
-      default:
-        output = `command not found: ${parts[0]}`;
-    }
+          return `cat: no such file: ${file}`;
+        },
+      },
+      help: {
+        description: "Show available commands",
+        execute: () => {
+          return Object.entries(commands)
+            .map(([name, cmd]) => `${name} - ${cmd.description}`)
+            .join("\n");
+        },
+      },
+      clear: {
+        description: "Clear the screen",
+        execute: () => {
+          setHistory([]);
+          setInput("");
+        },
+      },
+    };
 
-    setHistory((h) => [...h, { cmd, output }]);
-    setInput("");
-  };
+      setHistory((h) => [...h, { cmd, output }]);
+      setInput("");
+    };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
