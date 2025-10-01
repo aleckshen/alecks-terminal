@@ -116,7 +116,7 @@ export default function Home() {
   const cwd = pathStack.length > 0 ? `~/${pathStack.join("/")}` : "~";
 
   return (
-    <div className="min-h-screen font-mono">
+    <div className="font-mono">
       {history.map((line, i) => (
         <div key={i} className="mb-2"> 
           <div className="flex items-start">
