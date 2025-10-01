@@ -5,6 +5,7 @@ import { useState, useEffect, KeyboardEvent, useRef} from "react";
 type HistoryEntry = {
   cmd: string;
   output: string;
+  showPrompt?: boolean; // default true
 };
 
 const fileSystem = {
@@ -17,7 +18,10 @@ const fileSystem = {
 };
 
 export default function Home() {
-  const [history, setHistory] = useState<HistoryEntry[]>([]);
+  const [history, setHistory] = useState<HistoryEntry[]>([
+    { cmd: "Welcome!!", output: "Welcome to Aleck's Terminal portfolio :D" },
+    { cmd: "", output: "Type 'help' for a list of available commands", showPrompt: false },
+  ]);
   const [input, setInput] = useState("");
   const [pathStack, setPathStack] = useState<string[]>([]); 
 
@@ -118,18 +122,24 @@ export default function Home() {
   return (
     <div className="font-mono">
       {history.map((line, i) => (
-        <div key={i} className="mb-2"> 
-          <div className="flex items-start">
-            <span className="text-[#97E0A6] mr-2">
-              visitor@alecksterminal.com:~$
-            </span>
-            <span className="text-white break-words">{line.cmd}</span>
-          </div>
+        <div key={i} className="mb-2">
+          {/* Only render prompt if showPrompt !== false */}
+          {line.showPrompt !== false && (
+            <div className="flex items-start">
+              <span className="text-[#97E0A6] mr-2">
+                visitor@alecksterminal.com:~$
+              </span>
+              <span className="text-white break-words">{line.cmd}</span>
+            </div>
+          )}
+
+          {/* Always render output if it exists */}
           {line.output && (
             <div className="mb-[15px] text-white break-words">{line.output}</div>
           )}
         </div>
       ))}
+
 
       <div ref={terminalEndRef} />
 
