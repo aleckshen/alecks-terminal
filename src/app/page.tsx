@@ -17,11 +17,24 @@ const fileSystem = {
   contact: "aleckshn@gmail.com",
 };
 
+const asciiArt = `
+░▒▓██████▓▒░░▒▓█▓▒░      ░▒▓████████▓▒░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░       ░▒▓███████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓███████▓▒░  
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓████████▓▒░▒▓█▓▒░      ░▒▓██████▓▒░░▒▓█▓▒░      ░▒▓███████▓▒░        ░▒▓██████▓▒░░▒▓████████▓▒░▒▓██████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░     ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░             ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓████████▓▒░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░      ░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+                                                                                                                             
+                                                                                                                             
+`;
+
 export default function Home() {
   const [history, setHistory] = useState<HistoryEntry[]>([
     { cmd: "Welcome!!", output: "" },
     { cmd: "", output: "Welcome to Aleck's Terminal portfolio :D", showPrompt: false },
-    { cmd: "", output: "Type 'help' for a list of available commands.", showPrompt: false },
+    { cmd: "", output: asciiArt, showPrompt: false },
+    { cmd: "", output: "Type `help` for a list of available commands.", showPrompt: false },
   ]);
   const [input, setInput] = useState("");
   const [pathStack, setPathStack] = useState<string[]>([]); 
@@ -136,7 +149,9 @@ export default function Home() {
 
           {/* Always render output if it exists */}
           {line.output && (
-            <div className="mb-[15px] text-white break-words">{line.output}</div>
+            <div className="mb-[15px] text-white break-words">
+              <pre>{line.output}</pre>
+            </div>
           )}
         </div>
       ))}
