@@ -54,28 +54,15 @@ export default function Home() {
       }
     > = {
       help: {
-        description: "Show available commands",
+        description: "Type `help` for a list of available commands.",
         expectedArgs: 0,
         execute: () =>
           [
             "Available commands:",
-            "ls",
-            "cd",
-            "cat",
             "clear",
             "help",
           ].join("\n"),
             },
-      ls: {
-        description: "List files in current directory",
-        expectedArgs: 0,
-        execute: () => "about  projects  contact",
-      },
-      cd: {
-        description: "Change directory",
-        expectedArgs: 1,
-        execute: (args: string[]) => `changing directory to ${args[0]}`,
-      },
       clear: {
         description: "Clear the screen",
         expectedArgs: 0,
