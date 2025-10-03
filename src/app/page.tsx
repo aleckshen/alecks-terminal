@@ -34,23 +34,14 @@ export default function Home() {
     { cmd: "", output: asciiArt, showPrompt: false },
     { cmd: "", output: "Type `help` for a list of available commands.", showPrompt: false },
   ]);
-  const [input, setInput] = useState("");
-  const [pathStack, setPathStack] = useState<string[]>([]); 
 
+  const [input, setInput] = useState("");
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when history changes
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history]);
-  
-  const getCurrentNode = () => {
-    let node: any = fileSystem;
-    for (const seg of pathStack) {
-      node = node[seg];
-    }
-    return node;
-  };
 
   const handleCommand = (cmd: string) => {
     if (!cmd) {
@@ -128,8 +119,6 @@ export default function Home() {
     }
     // TODO: handle up/down arrow history, tab autocomplete etc. do this stuff later ceebs rn
   };
-
-  const cwd = pathStack.length > 0 ? `~/${pathStack.join("/")}` : "~";
 
   return (
     <div className="font-mono">
