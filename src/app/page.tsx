@@ -8,15 +8,6 @@ type HistoryEntry = {
   showPrompt?: boolean; // default true
 };
 
-const fileSystem = {
-  about: "Hello! I'm me, and this is my about text.",
-  projects: {
-    "my-app": "Description of my-app",
-    "cli-portfolio": "This CLI website you’re building",
-  },
-  contact: "aleckshn@gmail.com",
-};
-
 const asciiArt = `
  █████╗ ██╗     ███████╗ ██████╗██╗  ██╗    ███████╗██╗  ██╗███████╗███╗   ██╗
 ██╔══██╗██║     ██╔════╝██╔════╝██║ ██╔╝    ██╔════╝██║  ██║██╔════╝████╗  ██║
@@ -66,8 +57,15 @@ export default function Home() {
         description: "Show available commands",
         expectedArgs: 0,
         execute: () =>
-          "Available commands: ls, cd <dir>, cat <file>, clear, help",
-      },
+          [
+            "Available commands:",
+            "ls",
+            "cd",
+            "cat",
+            "clear",
+            "help",
+          ].join("\n"),
+            },
       ls: {
         description: "List files in current directory",
         expectedArgs: 0,
