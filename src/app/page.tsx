@@ -54,17 +54,21 @@ export default function Home() {
       }
     > = {
       help: {
-        description: "Type `help` for a list of available commands.",
+        description: "Pretty intuitive right xd",
         expectedArgs: 0,
         execute: () =>
           [
             "Available commands:",
+            "about",
+            "projects",
+            "social",
+            "email",
             "clear",
             "help",
           ].join("\n"),
             },
       clear: {
-        description: "Clear the screen",
+        description: "Clears all terminal history",
         expectedArgs: 0,
         execute: () => {
           setHistory([]);
