@@ -60,7 +60,7 @@ export default function Home() {
         expectedArgs: null, // we'll ignore global arg enforcement
         execute: (args: string[]) => {
           if (args.length > 0) {
-            return `Error: 'help' does not take any arguments`;
+            return "Error: `help` does not take any arguments";
           }
 
           return [
@@ -95,7 +95,7 @@ export default function Home() {
         expectedArgs: null, // let command handle validation
         execute: (args: string[]) => {
           if (args.length > 0) {
-            return `Error: 'about' does not take any arguments`;
+            return "Error: `about` does not take any arguments";
           }
 
           return [
@@ -113,7 +113,7 @@ export default function Home() {
         expectedArgs: null,
         execute: (args: string[]) => {
           if (args.length > 0) {
-            return `Error: 'projects' does not take any arguments`;
+            return "Error: `projects` does not take any arguments";
           }
 
           return [
@@ -133,7 +133,7 @@ export default function Home() {
         expectedArgs: 1, 
         execute: (args: string[]) => {
           if (args.length < 1) {
-            return "Error: 'open' requires a second parameter (e.g. open aleck)";
+            return "Error: `open` requires a second parameter (e.g. open aleck)";
           }
 
           const target = args[0];
@@ -157,7 +157,7 @@ export default function Home() {
         expectedArgs: null,
         execute: (args: string[]) => {
           if (args.length > 0) {
-            return `Error: 'email' does not take any arguments`;
+            return "Error: `email` does not take any arguments";
           }
 
           return [
@@ -168,7 +168,7 @@ export default function Home() {
         },
       },
 
-      
+
     };
 
     let output = "";
