@@ -111,6 +111,17 @@ export default function Home() {
           "\n",
         ].join("\n"),
       },
+
+      email: {
+        description: "View my email address",
+        expectedArgs: 0,
+        execute: () =>
+        [
+          "",
+          "aleckshn@gmail.com",
+          "\n"
+        ].join("\n"),
+      }
     };
 
     let output = "";
