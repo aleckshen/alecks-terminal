@@ -79,7 +79,19 @@ export default function Home() {
           setHistory([]);
           setInput("");
         },
-      }, 
+      },
+      about: {
+        description: "Brief description about me",
+        expectedArgs: 0,
+        execute: () =>
+        [
+          "",
+          "Hello! My name is Aleck :)",
+          "I'm a second year computer science major studying at the Unviersity of Auckland.",
+          "I'm passionate about web development and love creating interactive and user-friendly applications.",
+          "\n",
+        ].join("\n"),
+      } 
     };
 
     let output = "";
