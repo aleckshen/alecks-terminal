@@ -8,6 +8,7 @@ type HistoryEntry = {
   showPrompt?: boolean; // default true
 };
 
+// good ascii art fonts: Terrace, ANSI shadow
 const asciiArt = `
  █████╗ ██╗     ███████╗ ██████╗██╗  ██╗    ███████╗██╗  ██╗███████╗███╗   ██╗
 ██╔══██╗██║     ██╔════╝██╔════╝██║ ██╔╝    ██╔════╝██║  ██║██╔════╝████╗  ██║
@@ -58,13 +59,17 @@ export default function Home() {
         expectedArgs: 0,
         execute: () =>
           [
+            "",
             "Available commands:",
-            "about",
-            "projects",
-            "social",
-            "email",
-            "clear",
-            "help",
+            "about         - brief description about me",
+            "projects      - view my coding projects",
+            "social        - view my social links",
+            "email         - view my email address",
+            "themes        - view available themes",
+            "welcome       - displays hero banner",
+            "clear         - clear terminal history",
+            "help          - pretty self explanatory xd",
+            "\n",
           ].join("\n"),
             },
       clear: {
@@ -74,7 +79,7 @@ export default function Home() {
           setHistory([]);
           setInput("");
         },
-      },
+      }, 
     };
 
     let output = "";
