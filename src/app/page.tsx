@@ -57,9 +57,13 @@ export default function Home() {
 
       help: {
         description: "Pretty intuitive right xd",
-        expectedArgs: 0,
-        execute: () =>
-          [
+        expectedArgs: null, // we'll ignore global arg enforcement
+        execute: (args: string[]) => {
+          if (args.length > 0) {
+            return `Error: 'help' does not take any arguments`;
+          }
+
+          return [
             "",
             "Available commands:",
             "",
@@ -72,8 +76,10 @@ export default function Home() {
             "clear          - clear terminal history",
             "help           - pretty self explanatory xd",
             "\n",
-          ].join("\n"),
-            },
+          ].join("\n");
+        },
+      },
+
 
       clear: {
         description: "Clears all terminal history",
@@ -86,30 +92,40 @@ export default function Home() {
 
       about: {
         description: "Brief description about me",
-        expectedArgs: 0,
-        execute: () =>
-        [
-          "",
-          "Hello! My name is Aleck :)",
-          "I'm a second year computer science major studying at the Unviersity of Auckland",
-          "I'm passionate about web development and love creating interactive and user-friendly applications.",
-          "\n",
-        ].join("\n"),
+        expectedArgs: null, // let command handle validation
+        execute: (args: string[]) => {
+          if (args.length > 0) {
+            return `Error: 'about' does not take any arguments`;
+          }
+
+          return [
+            "",
+            "Hello! My name is Aleck :)",
+            "I'm a second year computer science major studying at the University of Auckland",
+            "I'm passionate about web development and love creating interactive and user-friendly applications.",
+            "\n",
+          ].join("\n");
+        },
       },
 
       projects: {
         description: "View my coding projects",
-        expectedArgs: 0,
-        execute: () =>
-        [
-          "",
-          "Type `open <project-name>` to view a project.",
-          "",
-          "aleck          - personal-website",
-          "quick-quiz     - web-based quiz application",
-          "pylib.         - cli tool that picks auckland libraries at random",
-          "\n",
-        ].join("\n"),
+        expectedArgs: null,
+        execute: (args: string[]) => {
+          if (args.length > 0) {
+            return `Error: 'projects' does not take any arguments`;
+          }
+
+          return [
+            "",
+            "Type `open <project-name>` to view a project.",
+            "",
+            "aleck          - personal-website",
+            "quick-quiz     - web-based quiz application",
+            "pylib          - cli tool that picks auckland libraries at random",
+            "\n",
+          ].join("\n");
+        },
       },
 
       open: {
@@ -138,31 +154,30 @@ export default function Home() {
 
       email: {
         description: "View my email address",
-        expectedArgs: 0,
-        execute: () =>
-        [
-          "",
-          "aleckshn@gmail.com",
-          "\n"
-        ].join("\n"),
-      }
+        expectedArgs: null,
+        execute: (args: string[]) => {
+          if (args.length > 0) {
+            return `Error: 'email' does not take any arguments`;
+          }
+
+          return [
+            "",
+            "aleckshn@gmail.com",
+            "\n",
+          ].join("\n");
+        },
+      },
+
+      
     };
 
     let output = "";
 
     if (commands[commandName]) {
       const cmdConfig = commands[commandName];
-      // If argument count doesn't match, treat as unknown command
-      let result = cmdConfig.execute(args);
-
-      // If expectedArgs is set (not null) and args.length mismatches,
-      // and execute didn’t handle it, show error.
-      if (cmdConfig.expectedArgs !== null && args.length !== cmdConfig.expectedArgs && !result) {
-        output = `Error: '${commandName}' expects ${cmdConfig.expectedArgs} parameter(s)`;
-      } else {
-        output = result || "";
-      }
-      
+      // lets commands handle their own arg errors
+      const result = cmdConfig.execute(args);
+      output = result || "";
     } else {
       // command doesn't exist at all
       output = `command not found: ${cmd}`; // Full input again
