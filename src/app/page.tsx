@@ -112,6 +112,30 @@ export default function Home() {
         ].join("\n"),
       },
 
+      open: {
+        description: "Navigate to a project or page",
+        expectedArgs: 1, 
+        execute: (args: string[]) => {
+          if (args.length < 1) {
+            return "Error: 'open' requires a second parameter (e.g. open aleck)";
+          }
+
+          const target = args[0];
+
+          switch (target) {
+            case "aleck":
+              return "Opening Aleck's personal website... (pretend this opens a link)";
+            case "quick-quiz":
+              return "Launching Quick Quiz project...";
+            case "pylib":
+              return "Starting pylib CLI tool...";
+            default:
+              return `Unknown target: ${target}`;
+          }
+        },
+      },
+
+
       email: {
         description: "View my email address",
         expectedArgs: 0,
@@ -129,12 +153,16 @@ export default function Home() {
     if (commands[commandName]) {
       const cmdConfig = commands[commandName];
       // If argument count doesn't match, treat as unknown command
-      if (cmdConfig.expectedArgs !== null && args.length !== cmdConfig.expectedArgs) {
-        output = `command not found: ${cmd}`; // Use the full input here
+      let result = cmdConfig.execute(args);
+
+      // If expectedArgs is set (not null) and args.length mismatches,
+      // and execute didn’t handle it, show error.
+      if (cmdConfig.expectedArgs !== null && args.length !== cmdConfig.expectedArgs && !result) {
+        output = `Error: '${commandName}' expects ${cmdConfig.expectedArgs} parameter(s)`;
       } else {
-        const result = cmdConfig.execute(args);
         output = result || "";
       }
+      
     } else {
       // command doesn't exist at all
       output = `command not found: ${cmd}`; // Full input again
