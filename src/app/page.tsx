@@ -54,6 +54,7 @@ export default function Home() {
         execute: (args: string[]) => string | void;
       }
     > = {
+
       help: {
         description: "Pretty intuitive right xd",
         expectedArgs: 0,
@@ -61,17 +62,19 @@ export default function Home() {
           [
             "",
             "Available commands:",
-            "about         - brief description about me",
-            "projects      - view my coding projects",
-            "social        - view my social links",
-            "email         - view my email address",
-            "themes        - view available themes",
-            "welcome       - displays hero banner",
-            "clear         - clear terminal history",
-            "help          - pretty self explanatory xd",
+            "",
+            "about          - brief description about me",
+            "projects       - view my coding projects",
+            "social         - view my social links",
+            "email          - view my email address",
+            "themes         - view available themes",
+            "welcome        - displays hero banner",
+            "clear          - clear terminal history",
+            "help           - pretty self explanatory xd",
             "\n",
           ].join("\n"),
             },
+
       clear: {
         description: "Clears all terminal history",
         expectedArgs: 0,
@@ -80,6 +83,7 @@ export default function Home() {
           setInput("");
         },
       },
+
       about: {
         description: "Brief description about me",
         expectedArgs: 0,
@@ -87,11 +91,26 @@ export default function Home() {
         [
           "",
           "Hello! My name is Aleck :)",
-          "I'm a second year computer science major studying at the Unviersity of Auckland.",
+          "I'm a second year computer science major studying at the Unviersity of Auckland",
           "I'm passionate about web development and love creating interactive and user-friendly applications.",
           "\n",
         ].join("\n"),
-      } 
+      },
+
+      projects: {
+        description: "View my coding projects",
+        expectedArgs: 0,
+        execute: () =>
+        [
+          "",
+          "Type `open <project-name>` to view a project.",
+          "",
+          "aleck          - personal-website",
+          "quick-quiz     - web-based quiz application",
+          "pylib.         - cli tool that picks auckland libraries at random",
+          "\n",
+        ].join("\n"),
+      },
     };
 
     let output = "";
