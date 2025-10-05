@@ -162,7 +162,8 @@ export default function Home() {
 
           return [
             "",
-            "aleckshn@gmail.com",
+            "aleckshn@gmail.com             - personal email",
+            "shae628@aucklanduni.ac.nz      - university email",
             "\n",
           ].join("\n");
         },
