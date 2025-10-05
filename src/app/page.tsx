@@ -140,11 +140,14 @@ export default function Home() {
 
           switch (target) {
             case "aleck":
-              return "Opening Aleck's personal website... (pretend this opens a link)";
+              window.open("https://aleckshen.com/", "_blank");
+              return "Opening Aleck's personal website...";
             case "quick-quiz":
-              return "Launching Quick Quiz project...";
+              window.open("https://github.com/aleckshen/quick-quiz", "_blank");
+              return "Opening quick quiz project...";
             case "pylib":
-              return "Starting pylib CLI tool...";
+              window.open("https://github.com/aleckshen/pylib", "_blank");
+              return "Opening pylib project...";
             default:
               return `Unknown target: ${target}`;
           }
