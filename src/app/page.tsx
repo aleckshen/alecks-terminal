@@ -92,7 +92,7 @@ export default function Home() {
 
       about: {
         description: "Brief description about me",
-        expectedArgs: null, // let command handle validation
+        expectedArgs: null, 
         execute: (args: string[]) => {
           if (args.length > 0) {
             return "Error: `about` does not take any arguments";
