@@ -184,7 +184,26 @@ export default function Home() {
           "\n" + asciiArt + "Type `help` for a list of available commands.";
         },
       },
+      
+      social: {
+        description: "Display my social links",
+        expectedArgs: null,
+        execute: (args: string[]) => {
+          if (args.length > 0) {
+            return "Error: `social` does not take any arguments";
+          }
 
+          return [
+            "",
+            "Type `open <social-name>` to open social link.",
+            "",
+            "instagram      - life updates ^_^",
+            "linkedin       - professional stuff",
+            "github         - all my coding projects",
+            "\n",
+          ].join("\n");
+        },
+      },
 
     };
 
