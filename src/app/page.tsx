@@ -172,6 +172,19 @@ export default function Home() {
         },
       },
 
+      welcome: {
+        description: "Displays the welcome banner",
+        expectedArgs: null,
+        execute: (args: string[]) => {
+          if (args.length > 0) {
+            return "Error: `welcome` does not take any arguments";
+          }
+
+          return "\n" + "Welcome to Aleck's Terminal portfolio :D" + 
+          "\n" + asciiArt + "Type `help` for a list of available commands.";
+        },
+      },
+
 
     };
 
