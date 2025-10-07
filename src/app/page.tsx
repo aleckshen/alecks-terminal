@@ -61,6 +61,22 @@ export default function Home() {
   const [input, setInput] = useState("");
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
+  // Load saved theme from localStorage on mount
+  useEffect(() => {
+    const savedThemeName = localStorage.getItem("selected-theme");
+
+    if (savedThemeName && savedThemeName in themes) {
+      const savedTheme = themes[savedThemeName as keyof typeof themes];
+      setTheme(savedTheme);
+
+      // Apply to CSS variables
+      document.documentElement.style.setProperty("--background-color", savedTheme.background);
+      document.documentElement.style.setProperty("--text-color", savedTheme.text);
+      document.documentElement.style.setProperty("--highlight-color", savedTheme.accent);
+    }
+  }, []);
+
+
   // Auto-scroll to bottom when history changes
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -272,8 +288,11 @@ export default function Home() {
             document.documentElement.style.setProperty("--text-color", newTheme.text);
             document.documentElement.style.setProperty("--highlight-color", newTheme.accent);
 
-            // also update local React state for terminal component (optional, if you style inner div separately)
+            // update state
             setTheme(newTheme);
+
+            // save to localStorage
+            localStorage.setItem("selected-theme", selected);
 
             return `Theme changed to '${selected}' successfully!`;
           }
