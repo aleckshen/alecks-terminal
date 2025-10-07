@@ -43,6 +43,11 @@ export default function Home() {
       text: "#ECEFF4",
       accent: "#88C0D0",
     },
+    shoom: {
+      background: "#1c181dff",
+      text: "#FFFFFF",
+      accent: "#F2D0D9",
+    }
   };
 
   const [theme, setTheme] = useState<Theme>(themes.default);
@@ -250,6 +255,7 @@ export default function Home() {
               "default",
               "rosepine",
               "blizzard",
+              "shoom",
               "\n",
             ].join("\n");
           }
