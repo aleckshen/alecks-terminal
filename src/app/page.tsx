@@ -241,6 +241,20 @@ export default function Home() {
     // TODO: handle up/down arrow history, tab autocomplete etc. do this stuff later ceebs rn
   };
 
+  const highlightBackticks = (text: string) => {
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+    // Keep backticks white, and color only the enclosed text in chosen colour
+    return escaped.replace(
+      /`([^`]+)`/g,
+      '<span style="color:white;">`</span><span style="color:#97E0A6;">$1</span><span style="color:white;">`</span>'
+    );
+  };
+
+
   return (
     <div className="font-mono">
       {history.map((line, i) => (
@@ -257,9 +271,12 @@ export default function Home() {
 
           {/* Always render output if it exists */}
           {line.output && (
-            <div className="mb-[15px] text-white break-words">
-              <pre>{line.output}</pre>
-            </div>
+            <pre
+              className="mb-[15px] text-white break-words whitespace-pre-wrap"
+              dangerouslySetInnerHTML={{
+                __html: highlightBackticks(line.output),
+              }}
+            />
           )}
         </div>
       ))}
