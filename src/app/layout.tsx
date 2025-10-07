@@ -1,5 +1,4 @@
 import "./globals.css";
-import type { ReactNode } from "react";
 import { IBM_Plex_Mono } from "next/font/google";
 
 const plexMono = IBM_Plex_Mono({
@@ -15,12 +14,13 @@ export const metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={`${plexMono.variable} p-[20px] bg-[#1C1E26] text-[#97E0A6] font-mono`}>
+      {/* remove hardcoded bg, text, padding */}
+      <body className={`${plexMono.variable} font-mono min-h-screen`}>
         {children}
       </body>
     </html>

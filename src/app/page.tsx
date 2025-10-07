@@ -2,6 +2,12 @@
 
 import { useState, useEffect, KeyboardEvent, useRef} from "react";
 
+type Theme = {
+  background: string;
+  text: string;
+  accent: string;
+};
+
 type HistoryEntry = {
   cmd: string;
   output: string;
@@ -20,6 +26,26 @@ const asciiArt = `
 `
 
 export default function Home() {
+  // themes
+  const themes: Record<string, Theme> = {
+    default: {
+      background: "#1C1E25",
+      text: "#FFFFFF",
+      accent: "#97E0A6",
+    },
+    rosepine: {
+      background: "#191724",
+      text: "#E0DEF4",
+      accent: "#EA9A97",
+    },
+    blizzard: {
+      background: "#2E3440",
+      text: "#ECEFF4",
+      accent: "#88C0D0",
+    },
+  };
+
+  const [theme, setTheme] = useState<Theme>(themes.default);
   const [history, setHistory] = useState<HistoryEntry[]>([
     { cmd: "Welcome!!", output: "" },
     { cmd: "", output: "Welcome to Aleck's Terminal portfolio :D", showPrompt: false },
@@ -57,7 +83,7 @@ export default function Home() {
 
       help: {
         description: "Pretty intuitive right xd",
-        expectedArgs: null, // we'll ignore global arg enforcement
+        expectedArgs: null, // ignore global arg enforcement
         execute: (args: string[]) => {
           if (args.length > 0) {
             return "Error: `help` does not take any arguments";
@@ -211,6 +237,46 @@ export default function Home() {
         },
       },
 
+      themes: {
+        description: "View or set terminal themes",
+        expectedArgs: null,
+        execute: (args: string[]) => {
+          if (args.length === 0) {
+            return [
+              "",
+              "Type `themes set <theme-name>` to set a theme.",
+              "",
+              "Available themes:",
+              "default",
+              "rosepine",
+              "blizzard",
+              "\n",
+            ].join("\n");
+          }
+
+          if (args[0] === "set") {
+            const selected = args[1];
+            if (!selected) return "Error: specify a theme (e.g. themes set shoom)";
+            if (!(selected in themes)) return `Error: theme '${selected}' not found`;
+
+            const newTheme = themes[selected as keyof typeof themes];
+
+            // update CSS variables globally
+            document.documentElement.style.setProperty("--background-color", newTheme.background);
+            document.documentElement.style.setProperty("--text-color", newTheme.text);
+            document.documentElement.style.setProperty("--highlight-color", newTheme.accent);
+
+            // also update local React state for terminal component (optional, if you style inner div separately)
+            setTheme(newTheme);
+
+            return `Theme changed to '${selected}' successfully!`;
+          }
+
+
+          return "Invalid syntax. Try `themes set <theme-name>`";
+        },
+      },
+
     };
 
     let output = "";
@@ -247,49 +313,57 @@ export default function Home() {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 
-    // Keep backticks white, and color only the enclosed text in chosen colour
-    return escaped.replace(
-      /`([^`]+)`/g,
-      '<span style="color:white;">`</span><span style="color:#97E0A6;">$1</span><span style="color:white;">`</span>'
-    );
-  };
+  return escaped.replace(
+    /`([^`]+)`/g,
+    '<span style="color:var(--highlight-color)">`$1`</span>'
+  );
+};
+
 
 
   return (
-    <div className="font-mono">
+    <div
+      className="font-mono p-4"
+      style={{
+        color: theme.text,
+        transition: "background-color 0.5s, color 0.5s",
+      }}
+    >
       {history.map((line, i) => (
         <div key={i} className="mb-2">
-          {/* Only render prompt if showPrompt !== false */}
           {line.showPrompt !== false && (
             <div className="flex items-start">
-              <span className="text-[#97E0A6] mr-2">
+              <span
+                className="mr-2 whitespace-nowrap"
+                style={{ color: theme.accent }}
+              >
                 visitor@alecksterminal.com:~$
               </span>
-              <span className="text-white break-words">{line.cmd}</span>
+              <span className="break-words">{line.cmd}</span>
             </div>
           )}
 
-          {/* Always render output if it exists */}
           {line.output && (
             <pre
-              className="mb-[15px] text-white break-words whitespace-pre-wrap"
-              dangerouslySetInnerHTML={{
-                __html: highlightBackticks(line.output),
-              }}
+              className="mb-[15px] break-words whitespace-pre-wrap"
+              dangerouslySetInnerHTML={{ __html: highlightBackticks(line.output) }}
             />
           )}
         </div>
       ))}
 
-
       <div ref={terminalEndRef} />
 
       <div className="flex items-start">
-        <span className="text-[#97E0A6] mr-2 whitespace-nowrap">
+        <span
+          className="mr-2 whitespace-nowrap"
+          style={{ color: theme.accent }}
+        >
           visitor@alecksterminal.com:~$
         </span>
         <input
-          className="bg-transparent text-white outline-none flex-1"
+          className="bg-transparent outline-none flex-1"
+          style={{ color: theme.text }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
