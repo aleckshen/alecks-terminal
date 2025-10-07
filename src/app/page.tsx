@@ -140,13 +140,19 @@ export default function Home() {
 
           switch (target) {
             case "aleck":
-              window.open("https://aleckshen.com/", "_blank");
+              setTimeout(() => {
+                window.open("https://aleckshen.com/", "_blank");
+              }, 1000);
               return "Opening Aleck's personal website...";
             case "quick-quiz":
-              window.open("https://github.com/aleckshen/quick-quiz", "_blank");
+              setTimeout(() => {
+                window.open("https://github.com/aleckshen/quick-quiz", "_blank");
+              }, 1000);
               return "Opening quick quiz project...";
             case "pylib":
-              window.open("https://github.com/aleckshen/pylib", "_blank");
+              setTimeout(() => {
+                window.open("https://github.com/aleckshen/pylib", "_blank");
+              }, 1000);
               return "Opening pylib project...";
             default:
               return `Unknown target: ${target}`;
