@@ -201,6 +201,21 @@ export default function Home() {
                 window.open("https://github.com/aleckshen/pylib", "_blank");
               }, 1000);
               return "Opening pylib project...";
+            case "instagram":
+              setTimeout(() => {
+                window.open("https://www.instagram.com/alecksn", "_blank");
+              }, 1000);
+              return "Opening Aleck's instagram...";
+            case "linkedin":
+              setTimeout(() => {
+                window.open("https://www.linkedin.com/in/aleckshen", "_blank");
+              }, 1000);
+              return "Opening Aleck's linkedin...";
+            case "github":
+              setTimeout(() => {
+                window.open("https://github.com/aleckshen", "_blank");
+              }, 1000);
+              return "Opening Aleck's github...";
             default:
               return `Unknown target: ${target}`;
           }

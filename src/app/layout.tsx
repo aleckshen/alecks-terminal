@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      {/* remove hardcoded bg, text, padding */}
+      { }
       <body className={`${plexMono.variable} font-mono min-h-screen`}>
         {children}
       </body>
