@@ -8,8 +8,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: "My Terminal Portfolio",
-  description: "A terminal-style personal website",
+  title: "Aleck | Terminal",
+  description: "Aleck's terminal-style personal website built with next, react, typescript and tailwindcss",
 };
 
 export default function RootLayout({
