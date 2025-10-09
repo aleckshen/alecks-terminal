@@ -10,6 +10,9 @@ const plexMono = IBM_Plex_Mono({
 export const metadata = {
   title: "Aleck | Terminal",
   description: "Aleck's terminal-style personal website built with next, react, typescript and tailwindcss",
+  icons: {
+    icon: "/images/terminal-icon.png",
+  },
 };
 
 export default function RootLayout({
